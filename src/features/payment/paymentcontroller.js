@@ -3,22 +3,8 @@ const { json } = require("express");
 const Card = require("./Card");
 const Transaction = require("./Transaction");
 const Order = require("./Order");
-
-const cart = {
-  totalcost: 234,
-  cartitems: [
-    {
-      productid: "641f6e395ea9fc44419925fc",
-      description:
-        "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-    },
-    {
-      productid: "642ada738f7eec46837a32c4",
-      description:
-        "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-    },
-  ],
-};
+const Wallet = require("../wallet/Wallet");
+const Cart = require("../cart/model");
 
 // method to create address
 exports.createAddress = async (data, userId) => {
@@ -62,18 +48,48 @@ exports.createAddress = async (data, userId) => {
   return response;
 };
 
+exports.getCart = async (userId) => {
+  let response = {};
+  try {
+    let cart = await Cart.findOne({ userId: userId });
+
+    if (cart) {
+      response = {
+        responseStatus: true,
+        responseMessage: "Cart fetched sucessfully",
+        responseData: cart,
+      };
+    } else {
+      response = {
+        responseStatus: false,
+        responseMessage: "Cart fetch failed",
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    response = {
+      responseStatus: false,
+      responseMessage: "Something Went wrong in Cart",
+    };
+  }
+
+  return response;
+};
+
 exports.validatePayment = async (data, userId) => {
   let response = {};
   try {
-    console.log(data.source);
-    if (data.source === "Credit" || "Debit") {
+    let cart = await Cart.findOne({ userId: userId });
+    console.log(cart);
+    if (data.source === "Credit" || data.source === "Debit") {
+      console.log("inside debit");
       let cardDb = await Card.find({ card: data.card });
       // console.log(cardDb);
       if (cardDb) {
         let transactionDb = await Transaction.create({
-          amount: cart.totalcost,
+          amount: cart.totalCost,
           date: new Date(),
-          type: "Debit",
+          type: "Debited",
           source: data.source,
           userid: userId,
         });
@@ -82,20 +98,48 @@ exports.validatePayment = async (data, userId) => {
           responseMessage: "Transaction was success",
           responseData: transactionDb,
         };
+      }
+    } else if (data.source === "Wallet") {
+      console.log("inside wallet");
+      let walletDb = await Wallet.findOne({ userid: userId });
+      let balance = parseInt(walletDb.accountbalance);
+      let totalCost= parseInt(cart.totalCost);
+      if (balance >= totalCost) {
+        balance = balance - totalCost;
+        let updateWalletData = {
+          accountbalance: balance,
+        };
+
+        const updatedWalletDb = await Wallet.findByIdAndUpdate(
+          walletDb.id,
+          updateWalletData,
+          { new: true }
+        );
+        if (updatedWalletDb) {
+          let transactionDb = await Transaction.create({
+            amount: cart.totalCost,
+            date: new Date(),
+            type: "Debited",
+            source: data.source,
+            userid: userId,
+          });
+          response = {
+            responseStatus: true,
+            responseMessage: "Transaction was success",
+            responseData: updatedWalletDb,
+          };
+        }
       } else {
         response = {
           responseStatus: false,
-          responseMessage: "Transaction failed",
+          responseMessage: "Not enough balance in wallet",
         };
       }
-    } else if (data.source == "Wallet") {
-      let walletDb = await Wallet.find({ userId: userId });
-      if (walletDb.balance == cart.totalcost) {
-        response = {
-          responseStatus: true,
-          responseMessage: "Transaction was success",
-        };
-      }
+    } else {
+      response = {
+        responseStatus: false,
+        responseMessage: "Transaction failed",
+      };
     }
   } catch (error) {
     console.log(error);
@@ -104,7 +148,7 @@ exports.validatePayment = async (data, userId) => {
       responseMessage: "Something went wrong in transaction",
     };
   }
-
+  console.log("inside response",response)
   return response;
 };
 
@@ -112,15 +156,15 @@ exports.createOrder = async (data, userId) => {
   let response = {};
   let orders = [];
   try {
+    let cart = await Cart.findOne({ userId: userId });
     let address = await Address.findOne({ userid: userId });
-    console.log(address);
-    console.log("Product id" + cart.cartitems[0].productid);
-    for (let i = 0; i < cart.cartitems.length; i++) {
+
+    for (let i = 0; i < cart.cartItems.length; i++) {
       let order = await Order.create({
-        productid: cart.cartitems[i].productid,
-        description: cart.cartitems[i].description,
+        productid: cart.cartItems[i].productId,
+        description: cart.cartItems[i].description,
         // sellerId: cart.cartitems.sellerId,
-        amount: cart.totalcost,
+        amount: cart.totalCost,
         date: new Date(),
         userid: userId,
         address: [
@@ -135,11 +179,15 @@ exports.createOrder = async (data, userId) => {
       });
       orders.push(order);
     }
-    response = {
-      responseStatus: true,
-      responseMessage: "Order sucessfully create",
-      responseData: orders,
-    };
+    if(orders){
+      deletedCart=await Cart.deleteOne({userId: userId})
+      response = {
+        responseStatus: true,
+        responseMessage: "Order sucessfully create",
+        responseData: orders,
+      };
+    }
+    
   } catch (error) {
     console.log(error);
     response = {

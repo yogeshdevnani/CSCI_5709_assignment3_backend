@@ -18,12 +18,13 @@ exports.getWalletData = async (userId) => {
         responseData: createWallet,
       };
     }
-
+    else{
     response = {
       responseStatus: true,
       responseMessage: "Wallet fetched sucessfully",
       responseData: walletDb,
     };
+  }
   } catch (error) {
     console.log(error);
     response = {
@@ -35,10 +36,43 @@ exports.getWalletData = async (userId) => {
   return response;
 };
 
+exports.updateWallet= async(data,userId)=>{
+  let response= {}
+  try {
+    const updateValue={accountbalance: data.accountbalance}
+    const filter= {userid:userId}
+
+    const updatedWalletDb= await Wallet.findOneAndUpdate(filter, updateValue,{new:true});
+    if(updatedWalletDb){
+      response={
+        responseStatus: true,
+        responseMessage: "Wallet sucessfully updated",
+        responseData: updatedWalletDb
+      }
+      
+    }
+    else{
+      response={
+        responseStatus: false,
+        responseMessage: "Wallet update failed"
+      }
+    }
+    
+  } catch (error) {
+    console.log(error)
+    response = {
+      responseStatus: false,
+      responseMessage: "Something Went wrong in Wallet",
+    };
+  }
+  
+  return response;
+};
+
 exports.getTransactionData = async (userId) => {
   let response = {};
   try {
-    let transactionDb = await Transaction.findOne({ userid: userId });
+    let transactionDb = await Transaction.find({ userid: userId });
     if (!transactionDb) {
       response = {
         responseStatus: false,
