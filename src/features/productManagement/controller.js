@@ -5,6 +5,10 @@ exports.addProduct = async (req, res) => {
   const sellerId = req.user.id;
   const data = req.body;
   console.log("addProduct outside");
+  console.log(data.imageData);
+  const imageURLSObject = generateImageURLObject(data.imageData);
+  const noImageAvailableURL =
+    "http://res.cloudinary.com/dihkowyae/image/upload/v1680702363/vjhv6fbbcoxzmqgmftrv.jpg";
   if (data.currentProductId) {
     console.log(`Existing Product ${data.currentProductId}`);
     const productId = data.currentProductId;
@@ -38,7 +42,10 @@ exports.addProduct = async (req, res) => {
       category: data.category,
       averageRating: 0,
       totalRating: 0,
-      imageThumbnailUrl: "https://dummyimage.com/600x600/",
+      imageThumbnailUrl: data.imageData[0]
+        ? data.imageData[0]
+        : noImageAvailableURL,
+      images: imageURLSObject,
       ratingsData: [
         {
           ratingId: 1,
@@ -48,7 +55,6 @@ exports.addProduct = async (req, res) => {
         },
       ],
     });
-    console.log(productAdd);
     res.send("success");
   }
 };
@@ -75,3 +81,15 @@ exports.testDummy = async (req, res) => {
   res.send("Dummy called");
   console.log("dummy get called");
 };
+
+function generateImageURLObject(imageURLS) {
+  const imageURLJson = [];
+  for (let i = 0; i < imageURLS.length; i++) {
+    imageURLJson.push({
+      imageId: i + 1,
+      imageUrl: imageURLS[i],
+    });
+  }
+
+  return imageURLJson;
+}
