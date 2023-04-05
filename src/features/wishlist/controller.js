@@ -1,3 +1,4 @@
+//author: Nishith Gadhiya
 const Wishlist = require("./model");
 const { ObjectId } = require("mongoose");
 

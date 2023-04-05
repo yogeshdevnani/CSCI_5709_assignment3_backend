@@ -1,3 +1,6 @@
+//Authors - Rituraj Kadamati 
+
+//Schema for product
 const mongoose = require("mongoose");
 
 const ProductSchema = new mongoose.Schema({

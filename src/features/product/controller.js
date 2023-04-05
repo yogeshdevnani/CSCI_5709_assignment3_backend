@@ -1,4 +1,6 @@
+//Authors - Rituraj Kadamati (Line 1 - Line 176) and Nishith Gadhiya (Line 179- Line 265)
 const Product = require("./model");
+
 
 exports.getProducts = async (req, res) => {
   try {

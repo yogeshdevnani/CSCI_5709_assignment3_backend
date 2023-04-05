@@ -1,5 +1,7 @@
+// Author - Rituraj Kadamati
 const Cart = require("./model");
 
+//adds product to cart
 exports.addToCart = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -73,6 +75,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 
+//removes product from Cart
 exports.removeFromCart = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -115,6 +118,7 @@ exports.removeFromCart = async (req, res) => {
   }
 };
 
+//gets Cart Items from the cart
 exports.getCartItems = async (req, res) => {
   try {
     const userId = req.user.id;
