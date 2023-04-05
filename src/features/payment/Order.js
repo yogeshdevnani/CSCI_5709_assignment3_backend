@@ -9,9 +9,6 @@ const OrderSchema = new Schema({
     required:true},
   description:{
     type: String},
-  // sellerId:{
-  //     type: String,
-  //     required:true},
   amount: {
     type: Number,
     required:true},
