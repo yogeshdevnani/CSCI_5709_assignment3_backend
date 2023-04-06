@@ -6,12 +6,13 @@ const Order = require("./Order");
 const Wallet = require("../wallet/Wallet");
 const Cart = require("../cart/model");
 
+//Author: Shobhit Arora
 // method to create address
 exports.createAddress = async (data, userId) => {
   let response = {};
   try {
-    // console.log(data.address1);
-    let addressdb = await Address.find({ userid: userId });
+    
+    let addressdb = await Address.findOne({ userid: userId });
     if (!addressdb) {
       addressdb = await Address.create({
         address1: data.address1,
@@ -80,12 +81,10 @@ exports.validatePayment = async (data, userId) => {
   let response = {};
   try {
     let cart = await Cart.findOne({ userId: userId });
-    console.log(cart);
     if (data.source === "Credit" || data.source === "Debit") {
-      console.log("inside debit");
-      let cardDb = await Card.find({ card: data.card });
-      // console.log(cardDb);
-      if (cardDb) {
+      //Test credit card 
+      // let cardDb = await Card.find({ card: data.card });
+      // if (cardDb) {
         let transactionDb = await Transaction.create({
           amount: cart.totalCost,
           date: new Date(),
@@ -98,9 +97,9 @@ exports.validatePayment = async (data, userId) => {
           responseMessage: "Transaction was success",
           responseData: transactionDb,
         };
-      }
+      // }
     } else if (data.source === "Wallet") {
-      console.log("inside wallet");
+      
       let walletDb = await Wallet.findOne({ userid: userId });
       let balance = parseInt(walletDb.accountbalance);
       let totalCost= parseInt(cart.totalCost);

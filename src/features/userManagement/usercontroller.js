@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const Seller = require("../SellerManagement/Seller");
 require("dotenv").config();
 
+//author:Tushar Arora
 //  user registration
 exports.userRegistration = async (UserReq) => {
   let response = {};
@@ -48,6 +49,7 @@ exports.userRegistration = async (UserReq) => {
 
   return response;
 };
+//author:Tushar Arora
 // user login
 exports.userLogin = async (UserReq) => {
   let response = {};
@@ -93,6 +95,8 @@ exports.userLogin = async (UserReq) => {
 
   return response;
 };
+
+//author:Tushar Arora
 // get otp code to reset the password
 exports.sendOTP = async (req) => {
   let response = {};
@@ -138,6 +142,8 @@ exports.sendOTP = async (req) => {
 
   return response;
 };
+
+//author:Tushar Arora
 // password recovery code
 exports.recoverpasswordforUser = async (UserReq) => {
   let response = {};

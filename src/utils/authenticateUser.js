@@ -1,5 +1,6 @@
 const { verifyAuthenticationToken } = require("./authentication");
 
+//author:Tushar Arora
 const authenticateUser = (req, res, next) => {
   const token = req.header("Authorization");
   console.log("tokenauth" + token);

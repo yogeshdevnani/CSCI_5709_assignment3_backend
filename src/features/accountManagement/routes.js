@@ -10,6 +10,7 @@ const {
 } = require("./accountcontroller");
 const router = express.Router();
 
+//author:Tushar Arora
 router.post("/updatepassword", authenticateUser, async (req, res) => {
   try {
     const data = req.body;
@@ -29,6 +30,7 @@ router.post("/updatepassword", authenticateUser, async (req, res) => {
   }
 });
 
+//author:Tushar Arora
 router.get("/getuserfirstandlastName", authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -44,6 +46,7 @@ router.get("/getuserfirstandlastName", authenticateUser, async (req, res) => {
   }
 });
 
+//author:Tushar Arora
 router.post(
   "/updateuserfirstandlastName",
   authenticateUser,
@@ -64,6 +67,7 @@ router.post(
   }
 );
 
+//author:Tushar Arora
 router.get("/getuseraddress", authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -79,6 +83,7 @@ router.get("/getuseraddress", authenticateUser, async (req, res) => {
   }
 });
 
+//author:Tushar Arora
 router.post("/updateuseraddress", authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -95,6 +100,7 @@ router.post("/updateuseraddress", authenticateUser, async (req, res) => {
   }
 });
 
+//author:Tushar Arora
 router.get("/getOrderDetails", authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;

@@ -1,10 +1,11 @@
 var jwt = require("jsonwebtoken");
-
+//author:Tushar Arora
 exports.getAuthenticationToken = (user) => {
   const authtoken = jwt.sign(user, process.env.JWT_SECRET);
   return authtoken;
 };
 
+//author:Tushar Arora
 exports.verifyAuthenticationToken = (token) => {
   let response;
   let data = {};

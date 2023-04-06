@@ -15,6 +15,7 @@ const {
   recoverpasswordforUser,
 } = require("./usercontroller");
 
+//author:Tushar Arora
 router.post("/register", async (req, res) => {
   try {
     const data = req.body;
@@ -40,6 +41,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+//author:Tushar Arora
 router.post("/login", async (req, res) => {
   try {
     const data = req.body;
@@ -65,6 +67,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//author:Tushar Arora
 router.post("/otp", async (req, res) => {
   try {
     const data = req.body;
@@ -85,6 +88,7 @@ router.post("/otp", async (req, res) => {
   }
 });
 
+//author:Tushar Arora
 router.post("/reset", async (req, res) => {
   try {
     const data = req.body;

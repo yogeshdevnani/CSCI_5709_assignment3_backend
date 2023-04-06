@@ -2,6 +2,8 @@ const Wallet = require("./Wallet");
 const { json } = require("express");
 const Transaction = require("../payment/Transaction");
 
+//Author: Shobhit Arora
+
 exports.getWalletData = async (userId) => {
   let response = {};
   try {

@@ -5,6 +5,7 @@ const encryptPassword = require("../../utils/passwordEncryptDecrypt");
 const bcrypt = require("bcryptjs");
 const Seller = require("./Seller");
 
+//author:Tushar Arora
 // seller registration code
 exports.sellerRegistration = async (SellerReq) => {
   let response = {};
@@ -46,6 +47,8 @@ exports.sellerRegistration = async (SellerReq) => {
 
   return response;
 };
+
+//author:Tushar Arora
 // seller login code
 exports.sellerLogin = async (SellerReq) => {
   let response = {};
@@ -94,6 +97,7 @@ exports.sellerLogin = async (SellerReq) => {
   return response;
 };
 
+//author:Tushar Arora
 // recovery password
 exports.recoverpasswordforSeller = async (SellerReq) => {
   let response = {};

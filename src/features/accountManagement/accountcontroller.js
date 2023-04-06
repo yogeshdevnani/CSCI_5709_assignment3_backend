@@ -6,6 +6,7 @@ const Order = require("../payment/Order");
 const Product = require("../product/model");
 
 const { json } = require("express");
+//author:Tushar Arora
 // to update the password of logged in user
 exports.UpdatePassword = async (UserReq, userId) => {
   let response = {};
@@ -55,6 +56,7 @@ exports.UpdatePassword = async (UserReq, userId) => {
 
   return response;
 };
+//author:Tushar Arora
 //fetch user first name and last name
 exports.getUserFirstandLastName = async (userId) => {
   let response = {};
@@ -89,7 +91,7 @@ exports.getUserFirstandLastName = async (userId) => {
 
   return response;
 };
-
+//author:Tushar Arora
 // update the user first and last name
 exports.updateUserFirstandLastName = async (UserReq, userId) => {
   let response = {};
@@ -132,7 +134,7 @@ exports.updateUserFirstandLastName = async (UserReq, userId) => {
 
   return response;
 };
-
+//author:Tushar Arora
 // get user address  details
 exports.getUserAddress = async (userId) => {
   let response = {};
@@ -170,6 +172,7 @@ exports.getUserAddress = async (userId) => {
 
   return response;
 };
+//author:Tushar Arora
 // udate user addresss
 exports.updateAddress = async (addressReq, userId) => {
   let response = {};
@@ -238,7 +241,7 @@ exports.updateAddress = async (addressReq, userId) => {
 
   return response;
 };
-
+//author:Tushar Arora
 // get the order history of the users
 exports.getOrderDetails = async (userId) => {
   ListofOrder = [];
